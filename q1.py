@@ -1,6 +1,6 @@
 import csv
 from typing import *
-from os import system
+# from os import system
 
 # Question-1. Modify the Miles Per Gallon program so it stores the data for each calculation in a CSV file.
 # 1. In PyCharm, open the mpg_write.py file (available in eConestoga with this assignment)
@@ -71,33 +71,32 @@ def save_trips_to_csv(trips:List)->None:
         writer.writerows(trips)
 
 def main():
-    system('clear')
-    # display a welcome message
-    print("The Miles Per Gallon program")
     print()
-    
+    print("The Miles Per Gallon program\n")
+
     trips = []  # List to store trip data
 
-    more = "y"
-    while more.lower() == "y":
+    while True:
         miles_driven = get_miles_driven()
         gallons_used = get_gallons_used()
-                                 
+
         mpg = round((miles_driven / gallons_used), 2)
-        print(f"Miles Per Gallon:\t{mpg}")
-        print()
-        
+        print(f"Miles Per Gallon:\t{mpg}\n")
+
         # Store the trip data
         trips.append([miles_driven, gallons_used, mpg])
-        
-        more = input("More entries? (y or n): ").strip().lower()
-        if more not in ["y", "yes"]:
-            break
-    
-    # Save the trip data to a CSV file
-    save_trips_to_csv(trips)
-    
-    print("Bye! The trip data has been saved to trips.csv.")
+
+        while True: # Validation for more entries
+            more = input("More entries? (y or n): ").strip().lower()
+            if more in ["y", "yes"]:
+                break
+            elif more in ["n", "no"]:
+                # Save the trip data to a CSV file
+                save_trips_to_csv(trips)
+                print("Bye! The trip data has been saved to trips.csv.")
+                return
+            else:
+                print("Invalid input. Please enter 'y' or 'n'.\n")
 
 if __name__ == "__main__":
     main()
