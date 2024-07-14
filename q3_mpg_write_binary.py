@@ -1,7 +1,7 @@
-import csv
-from typing import *
+import pickle
+from typing import List
 
-def get_miles_driven()->float:
+def get_miles_driven() -> float:
     """
     This function get data from user miles driven
     
@@ -10,10 +10,10 @@ def get_miles_driven()->float:
     
     Returns:
     float
-    """    
+    """   
     while True:
         try:
-            miles_driven:float = float(input("Enter miles driven:\t"))
+            miles_driven = float(input("Enter miles driven:\t"))
             if miles_driven > 0:
                 return miles_driven
             else:
@@ -21,7 +21,7 @@ def get_miles_driven()->float:
         except ValueError:
             print("Invalid input. Please enter a numeric value.\n")
 
-def get_gallons_used()->float:
+def get_gallons_used() -> float:
     """
     This function get data from user gallons used
     
@@ -30,10 +30,10 @@ def get_gallons_used()->float:
     
     Returns:
     float
-    """    
+    """ 
     while True:
         try:
-            gallons_used:float = float(input("Enter gallons of gas:\t"))
+            gallons_used = float(input("Enter gallons of gas:\t"))
             if gallons_used > 0:
                 return gallons_used
             else:
@@ -41,26 +41,43 @@ def get_gallons_used()->float:
         except ValueError:
             print("Invalid input. Please enter a numeric value.\n")
 
-def save_trips_to_csv(trips:List)->None:
-    """
-    This function save data to a csv file named 'trips.csv'
+def save_trips_to_binary(trips: List) -> None:
+    '''  
+    Save data to a binary file named 'trips.bin'
     
     Parameters:
     trips (list of float)
     
     Returns:
     None
-    """
-    with open('trips.csv', mode='w', newline='') as file:
-        writer = csv.writer(file)
-        writer.writerow(["Miles Driven", "Gallons Used", "MPG"])
-        writer.writerows(trips)
+    '''
+    with open('trips.bin', 'wb') as file:
+        pickle.dump(trips, file)
+
+def read_trips_from_binary() -> List:
+    ''' 
+    Read data from a binary file named 'trips.bin'
+    
+    Parameters:
+    None
+    
+    Returns:
+    list of float
+    '''
+    try:
+        with open('trips.bin', 'rb') as file:
+            trips_from_file = pickle.load(file)
+            print("\nTrips read from binary file:")
+            for trip in trips_from_file:
+                print(f"Miles Driven: {trip[0]}, Gallons Used: {trip[1]}, MPG: {trip[2]}")
+    except (FileNotFoundError, EOFError):
+        return []
 
 def main():
     print()
     print("The Miles Per Gallon program\n")
 
-    trips = []  # List to store trip data
+    trips = [] # list of trips
 
     while True:
         miles_driven = get_miles_driven()
@@ -69,17 +86,16 @@ def main():
         mpg = round((miles_driven / gallons_used), 2)
         print(f"Miles Per Gallon:\t{mpg}\n")
 
-        # Store the trip data
         trips.append([miles_driven, gallons_used, mpg])
 
-        while True: # Validation for more entries
+        while True:
             more = input("More entries? (y or n): ").strip().lower()
             if more in ["y", "yes"]:
                 break
             elif more in ["n", "no"]:
-                # Save the trip data to a CSV file
-                save_trips_to_csv(trips)
-                print("Bye! The trip data has been saved to trips.csv.")
+                save_trips_to_binary(trips)
+                read_trips_from_binary() # read data from binary file
+                print("Bye!")
                 return
             else:
                 print("Invalid input. Please enter 'y' or 'n'.\n")

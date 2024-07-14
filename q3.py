@@ -1,22 +1,10 @@
 #!/env/bin python3
 
+
+
 from typing import *
 from os import system
 import pickle
-
-# Question-3. Modify the programs that you created Question-1 and Question-2 so they create and use a
-# binary file instead of a CSV file. Otherwise, everything should work the same.
-# Modify the CSV version of the write program
-# 1. Open the mpg_write.py file that you created in exercise Question-l. Then, save it as
-# mpg_write_binary.py in the same directory.
-# 2. Modify this program so it saves the list as a binary file instead of a CSV file. The file should be
-# named trips.bin.
-# 3. Test the program to make sure it works. To do that, add statements that read the file at the end of
-# the program and display the list that has been read.
-# Modify the CSV version of the trip program
-# 4. Open the mpg.py file that you created in exercise Question-2. Then, save it as mpg_binary.py.
-# 5. Modify this program so it works the same as it did with the CSV file.
-# 6. Test this program to make sure it works.
 
 def get_miles_driven()->float:
     """
