@@ -1,13 +1,9 @@
-#!/env/bin python3
-
-from typing import *
-from os import system
 import csv
 import sys
 
 FILENAME = "movies.csv"
 
-def exit_program()->None:
+def exit_program():
     print("Terminating program.")
     sys.exit()
 
@@ -21,21 +17,16 @@ def read_movies():
         return movies
     except FileNotFoundError as e:
         print(f"Could not find {FILENAME} file.")
-        return movies  # Return empty list if file is not found
+        exit_program()
     except Exception as e:
         print(type(e), e)
         exit_program()
 
-def write_movies(movies)->None:
+def write_movies(movies):
     try:
         with open(FILENAME, "w", newline="") as file:
             writer = csv.writer(file)
             writer.writerows(movies)
-            # Raise a BlockingIOError to test the exception handling
-            # raise BlockingIOError("Testing exception handling")  # Uncomment to test
-    except OSError as e:
-        print(f"OSError: {type(e).__name__} - {e}")
-        exit_program()
     except Exception as e:
         print(type(e), e)
         exit_program()
@@ -47,21 +38,13 @@ def list_movies(movies):
     
 def add_movie(movies):
     name = input("Name: ")
-    while True:
-        year = input("Year: ")
-        try:
-            year = int(year)
-            if year <= 0:
-                raise ValueError("Year must be greater than zero.")
-            break
-        except ValueError as e:
-            print(f"Invalid year: {e}. Please try again.")
+    year = input("Year: ")
     movie = [name, year]
     movies.append(movie)
     write_movies(movies)
     print(f"{name} was added.\n")
 
-def delete_movie(movies)->None:
+def delete_movie(movies):
     while True:
         try:
             number = int(input("Number: "))
@@ -76,8 +59,7 @@ def delete_movie(movies)->None:
     write_movies(movies)
     print(f"{movie[0]} was deleted.\n")
 
-def display_menu()->None:
-    print()
+def display_menu():
     print("The Movie List program")
     print()
     print("COMMAND MENU")

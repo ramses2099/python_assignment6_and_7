@@ -5,21 +5,6 @@ from typing import *
 from os import system
 import pickle
 
-# Question-4. Modify the Future Value program so the user can’t cause the program to crash by entering an
-# invalid int or float value.
-# 1. In Pycharm, open the future_value.py (available in eConestoga with this assignment)
-# 2. Review the code and study the get_number() and get_integer() functions. Note that they receive
-# three arguments: the prompt for a user entry, the low value that the entry must be greater than, and
-# the high value that the entry must be less than or equal to. Then, review the calling statements in
-# the main() function and note how these functions are used.
-# 3. Test the program. Note that you can cause the program to crash by entering values that can’t be
-# converted to float and int values.
-# 4. Add exception handling to the get_number() and get_integer() functions so the user has to enter
-# valid float and int values. Then, test these changes to make sure the exception handling and the
-# data validation work correctly.
-
-#!/usr/bin/env python3
-
 def get_input(prompt, low, high, is_float=True)->float|int:
     """
     This function get data from user low, high

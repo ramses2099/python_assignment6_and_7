@@ -1,11 +1,7 @@
-#!/env/bin python3
+import pickle
+from typing import List
 
-import csv
-from typing import *
-from os import system
-
-
-def get_positive_float(prompt: str)->float:
+def get_positive_float(prompt: str) -> float:
     """
     This function get data from user and convert to float value
     
@@ -14,7 +10,7 @@ def get_positive_float(prompt: str)->float:
     
     Returns:
     float
-    """   
+    """ 
     while True:
         try:
             value = float(input(prompt))
@@ -25,43 +21,37 @@ def get_positive_float(prompt: str)->float:
         except ValueError:
             print("Invalid input. Please enter a numeric value.\n")
 
-def write_trips(trips:List)->None:
-    """
-    This function write data in a csv file named 'trips.csv'
+def write_trips(trips: List) -> None:
+    ''' 
+    This function write data in a binary file named 'trips.bin'
     
     Parameters:
-    trips:List
+    trips (list of float)
     
     Returns:
     None
-    """   
-    with open('trips.csv', 'w', newline='') as file:
-        writer = csv.writer(file)
-        writer.writerow(["Distance", "Gallons", "MPG"])
-        writer.writerows(trips)
+    '''
+    
+    with open('trips.bin', 'wb') as file:
+        pickle.dump(trips, file)
 
-def read_trips()->List:
-    """
-    This function read data from csv file named 'trips.csv'
+def read_trips() -> List:
+    ''' 
+    This function read data from a binary file named 'trips.bin'
     
     Parameters:
-    trips:List
+    None
     
     Returns:
-    List
-    """
-    trips = []
+    list of float
+    '''
     try:
-        with open('trips.csv', 'r') as file:
-            reader = csv.reader(file)
-            next(reader)  # Skip the header
-            for row in reader:
-                trips.append([float(row[0]), float(row[1]), float(row[2])])
-    except FileNotFoundError:
-        pass
-    return trips
+        with open('trips.bin', 'rb') as file:
+            return pickle.load(file)
+    except (FileNotFoundError, EOFError):
+        return []
 
-def list_trips(trips:List)->None:
+def list_trips(trips: List) -> None:
     """
     This function show a list for console
     
@@ -76,9 +66,7 @@ def list_trips(trips:List)->None:
         print(f"{trip[0]} {trip[1]} {trip[2]}")
 
 def main():
-    # display a welcome message
-    print("The Miles Per Gallon program")
-    print()
+    print("The Miles Per Gallon program\n")
 
     trips = read_trips()
     if trips:
@@ -90,9 +78,8 @@ def main():
         gallons_used = get_positive_float("Enter gallons of gas:\t")
 
         mpg = round((miles_driven / gallons_used), 2)
-        print(f"Miles Per Gallon:\t{mpg}")
-        print()
-        
+        print(f"Miles Per Gallon:\t{mpg}\n")
+
         trips.append([miles_driven, gallons_used, mpg])
         list_trips(trips)
         print()
@@ -104,10 +91,9 @@ def main():
             elif more in ["n", "no"]:
                 write_trips(trips)
                 print("Bye!")
-                return  # Exit the main function
+                return
             else:
                 print("Invalid input. Please try again.\n")
-
 
 if __name__ == "__main__":
     main()
