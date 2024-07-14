@@ -2,21 +2,6 @@
 
 from typing import *
 from os import system
-
-
-# Question-5. In this exercise, you’ll modify the Movies List 2.0 program so it does more exception handling.
-# You’ll also use a raise statement to test for exceptions.
-# 1. In Pycharm, open movies2.py (available in eConestoga with this assignment)
-# 2. Add data validation to the add_movie() function so the year entry is a valid integer that’s greater than zero.
-# Then, test this change.
-# 3. Modify the write_movies() function so it also handles any OSError exceptions by displaying the class
-# name and error message of the exception object and exiting the program
-# 4. Test this by using a raise statement in the try block that raises a BlockingIOError. This is one of the child
-# classes of the OSError. Then, comment out the raise statement.
-# 5. In the read_movies() function, comment out the two statements in the except clause for the
-# FileNotFoundError. Instead, use this except clause to return the empty movies list that’s initialized in the try
-# block. This should cause
-
 import csv
 import sys
 
@@ -46,6 +31,7 @@ def write_movies(movies)->None:
         with open(FILENAME, "w", newline="") as file:
             writer = csv.writer(file)
             writer.writerows(movies)
+            # Raise a BlockingIOError to test the exception handling
             # raise BlockingIOError("Testing exception handling")  # Uncomment to test
     except OSError as e:
         print(f"OSError: {type(e).__name__} - {e}")
@@ -91,6 +77,7 @@ def delete_movie(movies)->None:
     print(f"{movie[0]} was deleted.\n")
 
 def display_menu()->None:
+    print()
     print("The Movie List program")
     print()
     print("COMMAND MENU")
